@@ -2,6 +2,11 @@
 
 在线体验地址: [https://texthuman.ai](https://texthuman.ai)
 
+**项目预览**
+![首页图 1](https://imgc.cc/2024/09/12/66e2c95e09711.jpg)
+
+![首页图2](https://imgc.cc/2024/09/12/66e2c954bc46c.jpg)
+
 ## 项目简介
 
 汉语新解根据李继刚的 Prompt 模板, 对中文名词进行二次翻译, 并且生成美观图像的项目。
