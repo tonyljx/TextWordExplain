@@ -42,11 +42,6 @@ export default function RootLayout({
         <Footer />
         <ToastContainer />
         <Toaster richColors position="top-right" />
-        <Script
-          defer
-          data-domain="texthuman.ai"
-          src="https://stat.re/js/script.js"
-        ></Script>
       </body>
     </html>
   );
