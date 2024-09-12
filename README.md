@@ -1,5 +1,7 @@
 # 汉语新解 (Chinese Reinterpretation)
 
+在线体验地址: [https://texthuman.ai](https://texthuman.ai)
+
 ## 项目简介
 
 汉语新解根据李继刚的 Prompt 模板, 对中文名词进行二次翻译, 并且生成美观图像的项目。
