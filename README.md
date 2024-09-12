@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 汉语新解 (Chinese Reinterpretation)
 
-## Getting Started
+## 项目简介
 
-First, run the development server:
+汉语新解根据李继刚的 Prompt 模板, 对中文名词进行二次翻译, 并且生成美观图像的项目。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 主要特性
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 智能词汇解释：输入任何汉语词汇，获得 AI 生成的新颖解释
+- SVG 图像生成：每个解释都配有独特的 SVG 图像，视觉化呈现解释内容
+- 预设模板：提供多个预设词汇模板，展示系统的创意能力
+- 图像下载与复制：支持 SVG 和 PNG 格式的图像下载和复制功能
+- 响应式设计：适配各种设备屏幕，提供流畅的用户体验
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 技术栈
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 前端框架：Next.js
+- UI 组件：Tailwind CSS, ShadcnUI
+- AI 集成：Anthropic Claude API
 
-## Learn More
+## 快速开始
 
-To learn more about Next.js, take a look at the following resources:
+1. 克隆仓库：
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```
+   git clone https://github.com/your-username/chinese-reinterpretation.git
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. 安装依赖：
 
-## Deploy on Vercel
+   ```
+   pnpm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. 设置环境变量：
+   创建 `.env.local` 文件并添加以下内容：
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```
+   ANTHROPIC_API_KEY=your_api_key_here
+   ANTHROPIC_API_URL=your_url_here
+   ```
+
+4. 运行开发服务器：
+
+   ```
+   pnpm dev
+   ```
+
+5. 在浏览器中打开 [http://localhost:3000](http://localhost:3000) 查看应用。
+
+## 使用指南
+
+1. 在输入框中输入任何汉语词汇。
+2. 点击"生成汉语解释"按钮。
+3. 等待系统生成新的解释和配图。
+4. 查看生成的 SVG 图像和解释文本。
+5. 使用提供的按钮下载或复制图像。
+
+## 贡献
+
+我们欢迎任何形式的贡献！如果您有任何改进意见或发现了 bug，请创建 issue 或提交 pull request。
+
+## 许可证
+
+本项目采用 MIT 许可证。详情请见 [LICENSE](LICENSE) 文件。
+
+## 联系我们
+
+如有任何问题或建议，请联系：your-email@example.com
+
+---
+
+希望您喜欢使用汉语新解，探索语言的无限可能！
