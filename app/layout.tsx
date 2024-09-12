@@ -40,12 +40,6 @@ export default function RootLayout({
         {children}
         <Footer />
         <ToastContainer />
-
-        <Script
-          defer
-          data-domain="texthuman.ai"
-          src="https://stat.re/js/script.js"
-        ></Script>
       </body>
     </html>
   );
