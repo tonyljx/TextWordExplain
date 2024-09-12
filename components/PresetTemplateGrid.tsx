@@ -106,7 +106,7 @@ const PresetTemplateGrid: React.FC<PresetTemplateGridProps> = ({
             <h3 className="text-lg font-semibold mb-2 text-center group-hover:text-blue-600 transition-colors duration-300">
               {template.prompt}
             </h3>
-            <div className="flex gap-2 justify-center">
+            <div className="flex flex-col md:flex-row gap-2 justify-center">
               <Button
                 variant="outline"
                 onClick={() => downloadImage(template.svg)}

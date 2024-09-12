@@ -22,6 +22,7 @@ export default function Footer() {
           </div>
 
           <ul className="transition-colors flex sm:flex-row flex-col hover:text-text-neutral-800 text-neutral-600 dark:text-neutral-300 list-none gap-4">
+            Inspired By{" "}
             {pages.map((page, idx) => (
               <li key={"pages" + idx} className="list-none">
                 <Link

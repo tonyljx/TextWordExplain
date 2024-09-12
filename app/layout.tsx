@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { cn } from "@/lib/utils";
 import Header from "./_components/header";
 import Footer from "./_components/footer";
+import Script from "next/script";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -39,6 +40,12 @@ export default function RootLayout({
         {children}
         <Footer />
         <ToastContainer />
+
+        <Script
+          defer
+          data-domain="texthuman.ai"
+          src="https://stat.re/js/script.js"
+        ></Script>
       </body>
     </html>
   );

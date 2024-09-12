@@ -152,21 +152,6 @@ export default function SvgGenerator() {
                   placeholder="输入一个汉语词汇"
                   className="text-lg focus:ring-2 focus:ring-blue-200"
                 />
-                <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-                  <svg
-                    className="h-5 w-5 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </span>
               </div>
 
               <div className="space-y-3">
