@@ -60,14 +60,6 @@
 
 我们欢迎任何形式的贡献！如果您有任何改进意见或发现了 bug，请创建 issue 或提交 pull request。
 
-## 许可证
+## 参考
 
-本项目采用 MIT 许可证。详情请见 [LICENSE](LICENSE) 文件。
-
-## 联系我们
-
-如有任何问题或建议，请联系：your-email@example.com
-
----
-
-希望您喜欢使用汉语新解，探索语言的无限可能！
+- [李继刚的 Prompt 模板](https://web.okjike.com/u/752D3103-1107-43A0-BA49-20EC29D09E36)
