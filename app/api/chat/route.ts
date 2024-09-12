@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+export const maxDuration = 60;
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 
@@ -33,7 +34,8 @@ const systemPrompt = `
 (setq design-rule "合理使用负空间，整体排版要有呼吸感"
 design-principles '(干净 简洁 典雅))
 
-(设置画布 '(宽度 400 高度 600 边距 20))
+
+(设置画布 '(viewBox "0 0 400 600" 边距 20))
 (标题字体 '毛笔楷体)
 (自动缩放 '(最小字号 16))
 
@@ -57,6 +59,7 @@ design-principles '(干净 简洁 典雅))
 ;; 2. 之后调用主函数 (汉语新解 用户输入)
 `;
 
+// (设置画布 '(宽度 400 高度 600 边距 20))
 export async function POST(req: Request) {
   const { prompt } = await req.json();
 

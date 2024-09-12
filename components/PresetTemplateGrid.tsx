@@ -21,67 +21,105 @@ const PresetTemplateGrid: React.FC<PresetTemplateGridProps> = ({
 }) => {
   const svgRef = useRef<HTMLDivElement>(null);
 
-  const downloadImage = (svg: string) => {
-    const svgData = new XMLSerializer().serializeToString(
-      new DOMParser().parseFromString(svg, "image/svg+xml").documentElement
-    );
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
+  const getSvgDimensions = (svgElement: SVGSVGElement) => {
+    const viewBox = svgElement.getAttribute("viewBox");
+    const width = svgElement.getAttribute("width");
+    const height = svgElement.getAttribute("height");
 
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx?.drawImage(img, 0, 0);
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          toast.error("无法创建图片");
-          return;
-        }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "generated.png";
-        a.click();
-        URL.revokeObjectURL(url);
-      }, "image/png");
-    };
+    if (viewBox) {
+      const [, , vbWidth, vbHeight] = viewBox.split(" ").map(Number);
+      return { width: vbWidth, height: vbHeight };
+    }
 
-    img.src =
-      "data:image/svg+xml;base64," +
-      btoa(unescape(encodeURIComponent(svgData)));
+    if (width && height) {
+      return { width: parseFloat(width), height: parseFloat(height) };
+    }
+
+    // 如果没有viewBox和明确的宽高，使用SVG的自然尺寸
+    const bbox = svgElement.getBBox();
+    return { width: bbox.width, height: bbox.height };
   };
 
-  const copyImageToClipboard = async (svg: string) => {
-    try {
-      const svgData = new XMLSerializer().serializeToString(
-        new DOMParser().parseFromString(svg, "image/svg+xml").documentElement
-      );
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      const img = new Image();
+  const processImage = (
+    svgString: string,
+    callback: (canvas: HTMLCanvasElement) => void
+  ) => {
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+    const svgElement = svgDoc.documentElement as unknown as SVGSVGElement;
 
-      img.onload = async () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx?.drawImage(img, 0, 0);
+    const { width, height } = getSvgDimensions(svgElement);
+
+    // 设置更高的分辨率
+    const scale = 4;
+    const scaledWidth = width * scale;
+    const scaledHeight = height * scale;
+
+    // 创建一个新的SVG元素，设置正确的尺寸
+    const newSvg = svgElement.cloneNode(true) as SVGSVGElement;
+    newSvg.setAttribute("width", `${scaledWidth}`);
+    newSvg.setAttribute("height", `${scaledHeight}`);
+
+    const svgData = new XMLSerializer().serializeToString(newSvg);
+    const svgBlob = new Blob([svgData], {
+      type: "image/svg+xml;charset=utf-8",
+    });
+    const svgUrl = URL.createObjectURL(svgBlob);
+
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = scaledWidth;
+      canvas.height = scaledHeight;
+      const ctx = canvas.getContext("2d");
+
+      if (ctx) {
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+        callback(canvas);
+      }
+      URL.revokeObjectURL(svgUrl);
+    };
+    img.src = svgUrl;
+  };
+
+  const downloadImage = (svgString: string) => {
+    processImage(svgString, (canvas) => {
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            toast.error("无法创建图片");
+            return;
+          }
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "generated.png";
+          a.click();
+          URL.revokeObjectURL(url);
+        },
+        "image/png",
+        1.0
+      );
+    });
+  };
+
+  const copyImageToClipboard = async (svgString: string) => {
+    try {
+      processImage(svgString, async (canvas) => {
         try {
           const blob = await new Promise<Blob>((resolve) =>
-            canvas.toBlob(resolve as BlobCallback, "image/png")
+            canvas.toBlob(resolve as BlobCallback, "image/png", 1.0)
           );
           await navigator.clipboard.write([
             new ClipboardItem({ "image/png": blob }),
           ]);
-          toast.success("图片已复制到剪贴板");
+          toast.success("高清图片已复制到剪贴板");
         } catch (err) {
           console.error(err);
           toast.error("复制图片失败");
         }
-      };
-
-      img.src =
-        "data:image/svg+xml;base64," +
-        btoa(unescape(encodeURIComponent(svgData)));
+      });
     } catch (error) {
       console.error("Error:", error);
       toast.error("复制图片失败");

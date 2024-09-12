@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import Header from "./_components/header";
 import Footer from "./_components/footer";
 import Script from "next/script";
+import { Toaster } from "@/components/ui/sonner";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -33,13 +34,19 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800",
-          `${geistSans.variable} ${geistMono.variable} antialiased`
+          `${geistSans.variable} ${geistMono.variable} antialiased text-gray-800`
         )}
       >
         <Header />
         {children}
         <Footer />
         <ToastContainer />
+        <Toaster richColors position="top-right" />
+        <Script
+          defer
+          data-domain="texthuman.ai"
+          src="https://stat.re/js/script.js"
+        ></Script>
       </body>
     </html>
   );

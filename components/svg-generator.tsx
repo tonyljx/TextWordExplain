@@ -56,32 +56,60 @@ export default function SvgGenerator() {
       return;
     }
 
-    const svgData = new XMLSerializer().serializeToString(svgElement);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
+    // 获取原始SVG的尺寸和viewBox
+    const svgWidth = svgElement.getAttribute("width");
+    const svgHeight = svgElement.getAttribute("height");
+    const viewBox = svgElement.getAttribute("viewBox");
 
+    // 设置更高的分辨率
+    const scale = 4;
+    const width = parseInt(svgWidth || "800");
+    const height = parseInt(svgHeight || "600");
+
+    // 创建一个新的SVG元素，保留原始尺寸和viewBox
+    const newSvg = svgElement.cloneNode(true) as SVGElement;
+    newSvg.setAttribute("width", width.toString());
+    newSvg.setAttribute("height", height.toString());
+    if (viewBox) newSvg.setAttribute("viewBox", viewBox);
+
+    const svgData = new XMLSerializer().serializeToString(newSvg);
+    const svgBlob = new Blob([svgData], {
+      type: "image/svg+xml;charset=utf-8",
+    });
+    const svgUrl = URL.createObjectURL(svgBlob);
+
+    const img = new Image();
     img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx?.drawImage(img, 0, 0);
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          toast.error("无法创建图片");
-          return;
-        }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "generated.png";
-        a.click();
-        URL.revokeObjectURL(url);
-      }, "image/png");
+      const canvas = document.createElement("canvas");
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const ctx = canvas.getContext("2d");
+
+      if (ctx) {
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, width * scale, height * scale);
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              toast.error("无法创建图片");
+              return;
+            }
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "generated.png";
+            a.click();
+            URL.revokeObjectURL(url);
+            URL.revokeObjectURL(svgUrl);
+          },
+          "image/png",
+          1.0
+        );
+      }
     };
 
-    img.src =
-      "data:image/svg+xml;base64," +
-      btoa(unescape(encodeURIComponent(svgData)));
+    img.src = svgUrl;
   };
 
   const copyImageToClipboard = async () => {
@@ -91,32 +119,56 @@ export default function SvgGenerator() {
       const svgElement = svgRef.current.querySelector("svg");
       if (!svgElement) throw new Error("SVG element not found");
 
-      const svgData = new XMLSerializer().serializeToString(svgElement);
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      const img = new Image();
+      // 获取原始SVG的尺寸和viewBox
+      const svgWidth = svgElement.getAttribute("width");
+      const svgHeight = svgElement.getAttribute("height");
+      const viewBox = svgElement.getAttribute("viewBox");
 
+      // 设置更高的分辨率
+      const scale = 4;
+      const width = parseInt(svgWidth || "800");
+      const height = parseInt(svgHeight || "600");
+
+      // 创建一个新的SVG元素，保留原始尺寸和viewBox
+      const newSvg = svgElement.cloneNode(true) as SVGElement;
+      newSvg.setAttribute("width", width.toString());
+      newSvg.setAttribute("height", height.toString());
+      if (viewBox) newSvg.setAttribute("viewBox", viewBox);
+
+      const svgData = new XMLSerializer().serializeToString(newSvg);
+      const svgBlob = new Blob([svgData], {
+        type: "image/svg+xml;charset=utf-8",
+      });
+      const svgUrl = URL.createObjectURL(svgBlob);
+
+      const img = new Image();
       img.onload = async () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx?.drawImage(img, 0, 0);
+        const canvas = document.createElement("canvas");
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("Unable to create canvas context");
+
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, width * scale, height * scale);
+
         try {
           const blob = await new Promise<Blob>((resolve) =>
-            canvas.toBlob(resolve as BlobCallback, "image/png")
+            canvas.toBlob(resolve as BlobCallback, "image/png", 1.0)
           );
           await navigator.clipboard.write([
             new ClipboardItem({ "image/png": blob }),
           ]);
-          toast.success("图片已复制到剪贴板");
+          toast.success("高清图片已复制到剪贴板");
         } catch (err) {
           console.error(err);
           toast.error("复制图片失败");
+        } finally {
+          URL.revokeObjectURL(svgUrl);
         }
       };
 
-      img.src =
-        "data:image/svg+xml;base64," +
-        btoa(unescape(encodeURIComponent(svgData)));
+      img.src = svgUrl;
     } catch (error) {
       console.error("Error:", error);
       toast.error("复制图片失败");
@@ -164,7 +216,7 @@ export default function SvgGenerator() {
                       onClick={() => {
                         setText(item.prompt);
                         setSvg(item.svg);
-                        toast.success("加载成功");
+                        // toast.success("加载成功");
                       }}
                       className="text-sm hover:bg-gray-100"
                     >
@@ -191,7 +243,7 @@ export default function SvgGenerator() {
 
         <div className="w-full md:w-1/2">
           {loading ? (
-            <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-300 hover:border-blue-300">
+            <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-300 hover:border-blue-300 py-8 md:py-10">
               <CardContent className="flex items-center justify-center h-full">
                 <div className="animate-pulse flex space-x-4">
                   <div className="rounded-full bg-slate-300 h-10 w-10"></div>
@@ -214,9 +266,9 @@ export default function SvgGenerator() {
                 <div
                   ref={svgRef}
                   dangerouslySetInnerHTML={{ __html: svg }}
-                  className="mb-6"
+                  className="mb-6 w-full h-full"
                 />
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-col md:flex-row">
                   <Button variant="outline" onClick={downloadImage}>
                     <Download className="w-4 h-4 mr-2" />
                     下载图片

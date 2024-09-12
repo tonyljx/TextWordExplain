@@ -18,6 +18,16 @@ export default function Header() {
           </span>
         </Link>
       </div>
+
+      <div className="flex items-center gap-3">
+        <Link
+          href="/social-card"
+          className="text-md font-semibold text-gray-600"
+        >
+          生成社交卡片
+        </Link>
+      </div>
+
       <div className="flex items-center gap-3">
         <Link
           href="https://github.com/tonyljx/TextWordExplain?tab=readme-ov-file"
