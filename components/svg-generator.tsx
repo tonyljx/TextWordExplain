@@ -6,11 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Copy, Download } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { presetTemplates } from "@/lib/constants";
 import PresetTemplateGrid from "./PresetTemplateGrid";
-
-const presetPrompts = ["国足", "程序员", "打工人"];
 
 export default function SvgGenerator() {
   const [text, setText] = useState("");

@@ -119,7 +119,7 @@ const PresetTemplateGrid: React.FC<PresetTemplateGridProps> = ({
                 onClick={() => copyImageToClipboard(template.svg)}
               >
                 <Copy className="w-4 h-4 mr-2" />
-                复制图片
+                复制图片 (PC端)
               </Button>
               <Button
                 variant="outline"
