@@ -41,7 +41,7 @@ export default function Footer() {
             2024 &copy; {SITE_NAME}
           </p>
           <div className="flex gap-4">
-            <Link href="#">
+            <Link href="https://github.com/tonyljx/TextWordExplain?tab=readme-ov-file">
               <IconBrandGithub className="h-6 w-6 text-neutral-500 dark:text-neutral-300" />
             </Link>
             <Link href="https://www.buymeacoffee.com/tonyliang6">
